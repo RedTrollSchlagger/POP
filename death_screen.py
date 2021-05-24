@@ -1,9 +1,11 @@
 import pygame
 
 
-def death_screen(surface, screen_height, fps, clock):
+def death_screen(surface, screen_height, fps, clock, file_add):
     font1 = pygame.font.SysFont('serif', 24)
-    output_result = font1.render("Результат ", True, (255, 255, 255))
+    res = open(file_add, "r")
+    point = res.readline(1)
+    output_result = font1.render("Результат " + str(point), True, (255, 255, 255))
     death_ground = pygame.image.load('death_ground.jpeg').convert()
     done = False
     while not done:

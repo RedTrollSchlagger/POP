@@ -1,8 +1,8 @@
 import pygame
-import random 
+import random
 
 
-def game_process(surface, game_zone_w, screen_height, fps, clock):
+def game_process(surface, game_zone_w, screen_height, fps, clock, file_add):
     head_position = (int(game_zone_w/2), int(screen_height/2))
     body = list()
     body.append(head_position)
@@ -26,13 +26,13 @@ def game_process(surface, game_zone_w, screen_height, fps, clock):
 
             if event.type == pygame.KEYDOWN:
                 keystate = pygame.key.get_pressed()
-                if keystate[pygame.K_w] or keystate[pygame.K_UP]:
+                if (keystate[pygame.K_w] or keystate[pygame.K_UP]) and snake_speed_y != 20:
                     snake_speed_x, snake_speed_y = 0, -20
-                if keystate[pygame.K_s] or keystate[pygame.K_DOWN]:
+                if (keystate[pygame.K_s] or keystate[pygame.K_DOWN]) and snake_speed_y != -20:
                     snake_speed_x, snake_speed_y = 0, 20
-                if keystate[pygame.K_a] or keystate[pygame.K_LEFT]:
+                if (keystate[pygame.K_a] or keystate[pygame.K_LEFT]) and snake_speed_x != 20:
                     snake_speed_x, snake_speed_y = -20, 0
-                if keystate[pygame.K_d] or keystate[pygame.K_RIGHT]:
+                if (keystate[pygame.K_d] or keystate[pygame.K_RIGHT]) and snake_speed_x != -20:
                     snake_speed_x, snake_speed_y = 20, 0
                 if keystate[pygame.K_SPACE]:
                     snake_speed_x, snake_speed_y = 0, 0
@@ -52,6 +52,9 @@ def game_process(surface, game_zone_w, screen_height, fps, clock):
 
             if len(stop) < len(body):
                 done = True
+                res = open(file_add, "w")
+                res.write(str(point))
+                res.close()
                 return False
 
             if food_position == body[0]:

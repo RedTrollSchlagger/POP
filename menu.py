@@ -3,6 +3,7 @@ import pygame
 
 def menu_screen(surface, GAME_ZONE_W, SCREEN_HEIGHT, FPS, clock):
 	active_zone = [510, SCREEN_HEIGHT/2-40]
+	active_zone_width = 180
 	font1 = pygame.font.SysFont('serif', 24)
 	start_button = font1.render("Начать игру", True, (255, 255, 255))
 	top_button = font1.render("Рекорды", True, (255, 255, 255))
@@ -35,16 +36,29 @@ def menu_screen(surface, GAME_ZONE_W, SCREEN_HEIGHT, FPS, clock):
 					active_zone[1] += 40
 				if keystate[pygame.K_UP]:
 					active_zone[1] -= 40
+				if keystate[pygame.K_LEFT] and active_zone[1] == SCREEN_HEIGHT/2+40 and active_zone[0] == 510:
+					active_zone[0] -= 500
+					active_zone[1] = SCREEN_HEIGHT/2-80
+					active_zone_width = 450
+				if keystate[pygame.K_RIGHT] and active_zone[0] == 10:
+					active_zone[0] += 500
+					active_zone[1] = SCREEN_HEIGHT/2+40
+					active_zone_width = 180
 				if keystate[pygame.K_RETURN]:
 					if active_zone[1] == SCREEN_HEIGHT/2-40:
 						done = True
 						return False
 
-
-		if active_zone[1] > SCREEN_HEIGHT/2+40:
-			active_zone[1] -= 120
-		if active_zone[1] < SCREEN_HEIGHT/2-40:
-			active_zone[1] += 120
+		if active_zone[0] == 510:
+			if active_zone[1] > SCREEN_HEIGHT/2+40:
+				active_zone[1] -= 120
+			if active_zone[1] < SCREEN_HEIGHT/2-40:
+				active_zone[1] += 120
+		if active_zone[0] == 10:
+			if active_zone[1] > SCREEN_HEIGHT/2+80:
+				active_zone[1] -= 200
+			if active_zone[1] < SCREEN_HEIGHT/2 - 80:
+				active_zone[1] += 200
 
 		surface.fill((0, 0, 0))
 
@@ -55,7 +69,7 @@ def menu_screen(surface, GAME_ZONE_W, SCREEN_HEIGHT, FPS, clock):
 		surface.blit(top_button, (520, SCREEN_HEIGHT/2))
 		surface.blit(store_button, (520, SCREEN_HEIGHT/2 + 40))
 
-		if active_zone[1] == SCREEN_HEIGHT/2 + 40:
+		if active_zone[1] == SCREEN_HEIGHT/2 + 40 or active_zone[0] == 10:
 			surface.blit(skin1, (20, SCREEN_HEIGHT/2 - 80))
 			surface.blit(skin2, (20, SCREEN_HEIGHT/2 - 40))
 			surface.blit(skin3, (20, SCREEN_HEIGHT/2))
@@ -73,5 +87,5 @@ def menu_screen(surface, GAME_ZONE_W, SCREEN_HEIGHT, FPS, clock):
 			surface.blit(prise4, (300, SCREEN_HEIGHT/2 + 40))
 			surface.blit(ultimate_prise, (300, SCREEN_HEIGHT/2 + 80))
 
-		pygame.draw.rect(surface, (255, 255, 255), [active_zone[0], active_zone[1], 180, 30], width=1)
+		pygame.draw.rect(surface, (255, 255, 255), [active_zone[0], active_zone[1], active_zone_width, 30], width=1)
 		pygame.display.flip()
