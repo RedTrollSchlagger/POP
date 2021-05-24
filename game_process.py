@@ -1,8 +1,10 @@
 import pygame
 import random
+import death_screen
+from parameters import *
 
 
-def game_process(surface, game_zone_w, screen_height, fps, clock, file_add):
+def game_process(surface, clock):
     head_position = (int(game_zone_w/2), int(screen_height/2))
     body = list()
     body.append(head_position)
@@ -21,8 +23,8 @@ def game_process(surface, game_zone_w, screen_height, fps, clock, file_add):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                done = True
-                return True
+                pygame.quit()
+                quit()
 
             if event.type == pygame.KEYDOWN:
                 keystate = pygame.key.get_pressed()
@@ -51,11 +53,10 @@ def game_process(surface, game_zone_w, screen_height, fps, clock, file_add):
             stop.add(body[0])
 
             if len(stop) < len(body):
-                done = True
                 res = open(file_add, "w")
                 res.write(str(point))
                 res.close()
-                return False
+                death_screen.death_screen(surface, clock)
 
             if food_position == body[0]:
                 point += 1
@@ -80,5 +81,5 @@ def game_process(surface, game_zone_w, screen_height, fps, clock, file_add):
             surface.blit(user_points, (520, 20))
 
             pygame.draw.rect(surface, (255, 255, 255), [0, 0, game_zone_w, screen_height], width=1)
-            pygame.draw.rect(surface, (255, 255, 255), [500, 0, 230, screen_height], width=1)
+            pygame.draw.rect(surface, (255, 255, 255), [500, 0, 240, screen_height], width=1)
             pygame.display.flip()

@@ -1,23 +1,29 @@
 import pygame
+import game_process
+import menu
+from parameters import *
 
 
-def death_screen(surface, screen_height, fps, clock, file_add):
+def death_screen(surface, clock):
     font1 = pygame.font.SysFont('serif', 24)
     res = open(file_add, "r")
-    point = res.readline(1)
-    output_result = font1.render("Результат " + str(point), True, (255, 255, 255))
+    point = res.readline()
+    output_result = font1.render("Результат " + point, True, (255, 255, 255))
     death_ground = pygame.image.load('death_ground.jpeg').convert()
     done = False
     while not done:
         clock.tick(fps)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return True
+                pygame.quit()
+                quit()
 
             if event.type == pygame.KEYDOWN:
                 keystate = pygame.key.get_pressed()
                 if keystate[pygame.K_SPACE]:
-                    return False
+                    game_process.game_process(surface, clock)
+                if keystate[pygame.K_ESCAPE]:
+                    menu.menu_screen(surface, clock)
 
         surface.fill((0, 0, 0))
         pygame.draw.rect(surface, (255, 255, 255), [500, 0, 230, screen_height], width=1)
